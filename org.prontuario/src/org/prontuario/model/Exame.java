@@ -55,8 +55,6 @@ public class Exame {
 		Exame other = (Exame) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 	
 }

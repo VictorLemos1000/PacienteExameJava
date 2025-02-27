@@ -23,7 +23,6 @@ public class PacienteMasculino implements IPaciente{
 		this.cpf = cpf;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -58,7 +57,7 @@ public class PacienteMasculino implements IPaciente{
 	
 	@Override
 	public String toString() {
-		return "PacienteMasculino [id=" + id + ", nome=" + nome + ", cpf=" + cpf + "]";
+		return "PacienteMasculino [id=" + this.id + ", nome=" + this.nome + ", cpf=" + this.cpf + "]";
 	}
 	
 	

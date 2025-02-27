@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.prontuario.db.ConexaoMySQL;
 import org.prontuario.db.IConnection;
 import org.prontuario.exception.PacienteNaoEncontradoException;
 import org.prontuario.model.IPaciente;
@@ -24,24 +25,24 @@ public class PacienteDAO implements EntityDAO<IPaciente>{
 		// TODO Auto-generated method stub
 		String sql = "INSERT INTO PACIENTES VALUES (?, ?, ?, ?);";
 		
-		if(e instanceof PacienteMasculino) {
+		if (e instanceof PacienteMasculino) {
 			try(PreparedStatement ptst = conn.getConnection().prepareStatement(sql)){
 				ptst.setLong(1, e.getId());
 				ptst.setString(2, e.getNome());
 				ptst.setString(3, e.getCpf());
-				ptst.setString(4, "m");
+				ptst.setString(4, "Masculino");
 				ptst.execute();
 				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}else if(e instanceof PacienteFeminino) {
+		} else if (e instanceof PacienteFeminino) {
 			try(PreparedStatement ptst = conn.getConnection().prepareStatement(sql)){
 				ptst.setLong(1, e.getId());
 				ptst.setString(2, e.getNome());
 				ptst.setString(3, e.getCpf());
-				ptst.setString(4, "f");
+				ptst.setString(4, "Feminino");
 				ptst.execute();
 				
 			} catch (SQLException e1) {
@@ -56,21 +57,21 @@ public class PacienteDAO implements EntityDAO<IPaciente>{
 	@Override
 	public IPaciente findById(Long id) throws PacienteNaoEncontradoException{
 		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM PACIENTES P WHERE P.IDPACIENTES = ? and P.SEXO = 'm';";
+		String sqlM = "SELECT * FROM PACIENTES P WHERE P.IDPACIENTES = ? and P.SEXO = 'm';";
 		String sqlF = "SELECT * FROM PACIENTES P WHERE P.IDPACIENTES = ? and P.SEXO = 'f';";
 		
 		ResultSet rs;
 		IPaciente p = null;
-		try(PreparedStatement pstm = conn.getConnection().prepareStatement(sql)){
+		
+		try (PreparedStatement pstm = conn.getConnection().prepareStatement(sqlM)) {
 			pstm.setLong(1, id);
 			rs = pstm.executeQuery();
 			if(rs.next()) {
 				String nome = rs.getString("nome");
 				String cpf = rs.getString("cpf");
 				p = new PacienteMasculino(id, nome, cpf);
-			}else
-			{
-				try(PreparedStatement pstmF = conn.getConnection().prepareStatement(sqlF)){
+			} else {
+				try (PreparedStatement pstmF = conn.getConnection().prepareStatement(sqlF)) {
 					pstmF.setLong(1, id);
 					rs = pstmF.executeQuery();
 					if(rs.next()) {
@@ -79,7 +80,7 @@ public class PacienteDAO implements EntityDAO<IPaciente>{
 						p = new PacienteFeminino(id, nome, cpf);
 						return p;
 					}
-				}catch(SQLException e1) {
+				} catch(SQLException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -95,19 +96,45 @@ public class PacienteDAO implements EntityDAO<IPaciente>{
 	@Override
 	public void update(IPaciente e) {
 		// TODO Auto-generated method stub
+		String sqlUpdate = "UPDATE PACIENTES SET NOME = ?, CPF = ? WHERE ID = ?;";
 		
+		try (PreparedStatement pstm = conn.getConnection().prepareStatement(sqlUpdate)) {
+			pstm.setString(1, e.getNome());
+			pstm.setString(2, e.getCpf());
+			pstm.setLong(3, e.getId());
+			
+			int linhaAfetada = pstm.executeUpdate();
+			if (linhaAfetada == 0) {
+				throw new PacienteNaoEncontradoException(" Paciente não localizado para atualização.");
+			}
+		} catch (SQLException | PacienteNaoEncontradoException excecao) {
+			// TODO: handle exception
+			excecao.printStackTrace();
+		}
 	}
 
 	@Override
 	public void delete(IPaciente e) {
 		// TODO Auto-generated method stub
+		String sqlDelete = "DELETE FROM PACIENTES WHERE ID = ?;";
 		
+		try (PreparedStatement pstm = conn.getConnection().prepareStatement(sqlDelete)) {
+			pstm.setLong(1, e.getId());
+			
+			int linhaAfetada = pstm.executeUpdate();
+			if (linhaAfetada == 0) {
+				throw new PacienteNaoEncontradoException(" Paciente não localizado para remoção.");
+			}
+		} catch (Exception exception) {
+			// TODO: handle exception
+			exception.printStackTrace();
+		}
 	}
 
 	@Override
 	public List<IPaciente> findAll() {
-		// TODO Auto-generated method stub
 		return null;
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.prontuario.model.Exame;
 
-public class ExameDAO implements EntityDAO<Exame>{
+public class ExameDAO implements EntityDAO<Exame> {
 
 	@Override
 	public void save(Exame e) {

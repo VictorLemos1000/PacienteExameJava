@@ -25,21 +25,18 @@ public class ConexaoMySQL implements IConnection{
 	@Override
 	public Connection getConnection() {
 		// TODO Auto-generated method stub
-		Connection c = null;
+		Connection conexao = null;
 		try {
-			c = DriverManager.getConnection("jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/"+DB_NAME, DB_USER, DB_PASSWORD);
-		} catch (SQLException e) {
+			conexao = DriverManager.getConnection("jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME, DB_USER, DB_PASSWORD);
+		} catch (SQLException excecao) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			excecao.printStackTrace();
 		}
-		return c;
+		return conexao;
 	}
 
 	@Override
 	public void closeConnection() {
 		// TODO Auto-generated method stub
-		
 	}
-
-	
 }

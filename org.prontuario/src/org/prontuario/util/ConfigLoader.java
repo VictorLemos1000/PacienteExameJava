@@ -13,9 +13,9 @@ public class ConfigLoader {
 	
 	private ConfigLoader(String path) {
 		try {
-			FileInputStream fis =  new FileInputStream(path);
+			FileInputStream fileInputStrean =  new FileInputStream(path);
 			props = new Properties();
-			props.load(fis);
+			props.load(fileInputStrean);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

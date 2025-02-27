@@ -21,7 +21,6 @@ public class PacienteFeminino implements IPaciente{
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
-		
 	}
 
 	
