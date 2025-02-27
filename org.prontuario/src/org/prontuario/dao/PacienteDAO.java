@@ -3,6 +3,7 @@ package org.prontuario.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.prontuario.db.ConexaoMySQL;
@@ -132,9 +133,16 @@ public class PacienteDAO implements EntityDAO<IPaciente>{
 	}
 
 	@Override
-	public List<IPaciente> findAll() {
-		return null;
+	public List<IPaciente> findAll() throws SQLException{
 		// TODO Auto-generated method stub
+		List<IPaciente> pacientes = new ArrayList<>();
+		String sqlLocalizarPacientes = "SELECT * FROM PACIENTES";
+		
+		try (PreparedStatement pstm = conn.getConnection().prepareStatement(sqlLocalizarPacientes);
+				ResultSet resultSet = pstm.executeQuery()) {
+			
+		}
+		return null;
 	}
 
 }
