@@ -31,6 +31,8 @@ public class TelaCadastrarPaciente extends JDialog{
 	private JTextField txfNome;
 	private JTextField txfCpf;
 	
+	
+	
 	public TelaCadastrarPaciente(PacienteService pacService, TelaPrincipal main) {
 		this.pacService = pacService;
 		this.main = main;
