@@ -1,9 +1,7 @@
 package gui;
 
 import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
-
 import model.Paciente;
 
 public class TabelaPacienteModel extends AbstractTableModel{
@@ -21,13 +19,11 @@ public class TabelaPacienteModel extends AbstractTableModel{
 	
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
 		return pacientes.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
 		return colunas.length;
 	}
 	
@@ -38,7 +34,6 @@ public class TabelaPacienteModel extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
 		Paciente p = pacientes.get(rowIndex);
 		return switch(columnIndex) {
 		case 0 -> p.getId();

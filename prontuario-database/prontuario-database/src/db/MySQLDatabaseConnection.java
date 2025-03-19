@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import exception.DatabaseConectionException;
 import util.LoadParameter;
 
 public class MySQLDatabaseConnection implements DatabaseConnection{
@@ -15,29 +16,34 @@ public class MySQLDatabaseConnection implements DatabaseConnection{
 	private final String DBPORT = LoadParameter.getValor("DBPORT");
 	private final String DBUSER = LoadParameter.getValor("DBUSER");
 	
-
-	@Override
+	
 	public Connection getConnection() {
 		// TODO Auto-generated method stub
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://"+DBADDRESS+":"+DBPORT+"/"+DBNAME, DBUSER, DBPASSWORD);
+			conn = DriverManager.getConnection("jdbc:mysql://" + DBADDRESS + ":" + DBPORT + "/" + DBNAME, DBUSER, DBPASSWORD);
+			System.out.println(" Conexão estabelecida com o banco de dado.");
 			return conn;
-		} catch (SQLException e) {
+		} catch (SQLException excecao) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			excecao.printStackTrace();
 		}
 		return null;
 	}
 
-	@Override
-	public void disconnect() {
+	
+	public void disconnect() throws DatabaseConectionException{
 		// TODO Auto-generated method stub
 		try {
-			if(conn != null && !conn.isClosed())
-				conn = null;
+			if (conn != null && !conn.isClosed()) {
+			    try {
+			        conn.close();
+			        conn = null;
+			    } catch (SQLException e) {
+			        throw new DatabaseConectionException("Erro ao desconectar do banco de dados: " + e.getMessage(), e);
+			    }
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
