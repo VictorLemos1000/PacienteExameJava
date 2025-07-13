@@ -547,11 +547,11 @@ src/crud/prontuario/util/*.java</code></pre>
 Opção: 1
 
 === CADASTRO DE NOVO PACIENTE ===
-Nome completo: Maria
+Nome completo: Maria Silva
 CPF (apenas números): 12345678901
 
 --- CONFIRME OS DADOS ---
-Nome: Maria
+Nome: Maria Silva
 CPF: 123.456.789-01
 
 Confirmar cadastro? (S/N): S
