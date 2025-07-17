@@ -29,7 +29,7 @@ public class ExameDAO implements IEntityDAO<Exame>{
 	
 		try {
 			PreparedStatement pstm = conn.getConnection()
-					.prepareStatement("INSERT INTO EXAMES VALUES(?, ?, ?);");
+				.prepareStatement("INSERT INTO EXAMES (ID, DESCRICAO, DATA) VALUES(?, ?, ?);");
 			pstm.setLong(1, t.getId());
 			pstm.setString(2, t.getDescricao());
 			pstm.setObject(3, t.getData());
@@ -48,7 +48,7 @@ public class ExameDAO implements IEntityDAO<Exame>{
 		
 		try {
 			PreparedStatement pstm = conn.getConnection()
-					.prepareStatement("SELECT * FROM EXAMES WHERE id = ?;");
+				.prepareStatement("SELECT * FROM EXAMES WHERE id = ?;");
 			pstm.setLong(1, id);
 			ResultSet rs = pstm.executeQuery();
 			

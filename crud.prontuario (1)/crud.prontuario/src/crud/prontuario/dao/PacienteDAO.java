@@ -36,7 +36,7 @@ public class PacienteDAO implements IEntityDAO<Paciente>{
 			 * Protege de ataque SQL.
 			 */
 			PreparedStatement pstm = conn.getConnection()
-				.prepareStatement("INSERT INTO PACIENTES VALUES (?, ?, ?);");
+				.prepareStatement("INSERT INTO PACIENTES (ID, NOME, CPF) VALUES (?, ?, ?);");
 			pstm.setLong(1, t.getId());
 			pstm.setString(2, t.getNome());
 			pstm.setString(3, t.getCpf());
@@ -58,7 +58,7 @@ public class PacienteDAO implements IEntityDAO<Paciente>{
 		Paciente p = null;
 		try {
 			PreparedStatement pstm = conn.getConnection()
-					.prepareStatement("SELECT * FROM PACIENTES WHERE ID = ?;");
+				.prepareStatement("SELECT * FROM PACIENTES WHERE ID = ?;");
 			pstm.setLong(1, id);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
@@ -126,7 +126,7 @@ public class PacienteDAO implements IEntityDAO<Paciente>{
 		// TODO Auto-generated method stub
 		try {
 			PreparedStatement pstm = conn.getConnection()
-					.prepareStatement("UPDATE PACIENTES SET NOME = ?, CPF = ? WHERE ID = ?;");
+				.prepareStatement("UPDATE PACIENTES SET NOME = ?, CPF = ? WHERE ID = ?;");
 			pstm.setString(1, t.getNome());
 			pstm.setString(2, t.getCpf());
 			pstm.setLong(3, t.getId());

@@ -2,6 +2,7 @@ package crud.prontuario.dao;
 
 import java.util.List;
 
+// Classe generic
 public interface IEntityDAO <T> {
 
 	public void create(T t);
