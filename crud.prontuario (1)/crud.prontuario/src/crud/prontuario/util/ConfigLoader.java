@@ -20,10 +20,6 @@ public class ConfigLoader {
 			FileInputStream fis = new FileInputStream(arquivo);
 			PROP = new Properties();
 			PROP.load(fis);
-		} catch (FileNotFoundException e) {
-			// TODO: handle exception
-			System.err.println("\n Arquivo de configuração não encontrado: " + ARQUIVO);
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO: handle exception
 			System.err.println("\n Esso ao ler o Arquivo de configuração.");
@@ -37,9 +33,9 @@ public class ConfigLoader {
 	}
 	
 	// método para retornar a porta e o valor dela no BD.
-	public static String getValor(String chave, String valorPadrão) {
-		return PROP.getProperty(chave, valorPadrão);
-	}
+//	public static String getValor(String chave, String valorPadrão) {
+//		return PROP.getProperty(chave, valorPadrão);
+//	}
 	
 	/*
 	 * O método funciona da seguinte forma:
@@ -49,12 +45,12 @@ public class ConfigLoader {
 	 * OBS: se não hovesse o operador de negação os
 	 * valores booleandos estariam invertidos.
 	 */
-	public static boolean isConfigLoaded() {
-		if (ConfigLoader.isConfigLoaded()) {
-			System.out.println(" Configurações prontas para uso.");
-		} else {
-			System.err.println(" Há problemas nas configurações");
-		}
-		return !PROP.isEmpty();
-	}	
+//	public static boolean isConfigLoaded() {
+//		if (ConfigLoader.isConfigLoaded()) {
+//			System.out.println(" Configurações prontas para uso.");
+//		} else {
+//			System.err.println(" Há problemas nas configurações");
+//		}
+//		return !PROP.isEmpty();
+//	}	
 }

@@ -75,4 +75,14 @@ public class Exame {
 		Exame other = (Exame) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	public Object getPaciente_id() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setPaciente_id(Long pacienteId) {
+		// TODO Auto-generated method stub
+		
+	}
 }
