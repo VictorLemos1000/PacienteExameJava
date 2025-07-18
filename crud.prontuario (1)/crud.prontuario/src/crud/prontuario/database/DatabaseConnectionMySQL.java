@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import crud.prontuario.util.ConfigLoader;
@@ -36,12 +37,53 @@ public class DatabaseConnectionMySQL implements IConnection {
             throw new RuntimeException("Driver JDBC MySQL não encontrado", e);
         }
     }
+	
+	public void criabd() {
+	    String urlSemDatabase = "jdbc:mysql://%s:%s/".formatted(ADDRESS, PORT);
+	    try (Connection conn = DriverManager.getConnection(urlSemDatabase, USERNAME, PASSWORD);
+	         Statement stmt = conn.createStatement()) {
+
+	        String sql = """
+	            CREATE DATABASE IF NOT EXISTS %s;
+	            USE %s;
+
+	            CREATE TABLE IF NOT EXISTS pacientes (
+	                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	                cpf VARCHAR(14) UNIQUE NOT NULL,
+	                nome VARCHAR(255) NOT NULL
+	            );
+
+	            CREATE TABLE IF NOT EXISTS exames (
+	                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	                descricao VARCHAR(255) NOT NULL,
+	                data_exame DATETIME NOT NULL,
+	                paciente_id BIGINT NOT NULL,
+	                CONSTRAINT fk_exames_paciente
+	                    FOREIGN KEY (paciente_id)
+	                    REFERENCES pacientes(id)
+	            );
+	            """.formatted(DATABASE, DATABASE);
+
+	        for (String s : sql.split(";")) {
+	            if (!s.trim().isEmpty()) {
+	                stmt.execute(s);
+	            }
+	        }
+
+	        System.out.println("Banco de dados e tabelas criados com sucesso.");
+
+	  } catch (SQLException e) {
+	        System.out.println("Erro ao criar banco ou tabelas:");
+	        e.printStackTrace();
+}
+}
 
 	@Override
 	public Connection getConnection() 
 	{
 		try {
-			return DriverManager.getConnection("jdbc:mysql://%s:%s/".formatted(ADDRESS, PORT)+DATABASE, USERNAME, PASSWORD);
+			String url = "jdbc:mysql://" + ADDRESS + ":" + PORT + "/" + DATABASE;
+            return DriverManager.getConnection(url, USERNAME, PASSWORD);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

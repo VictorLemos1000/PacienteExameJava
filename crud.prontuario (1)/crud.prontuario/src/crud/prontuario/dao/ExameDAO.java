@@ -17,6 +17,7 @@ public class ExameDAO implements IEntityDAO<Exame>{
 	// Construtor da classe.
 	public ExameDAO(IConnection connection) {
 		this.conn = connection;
+		this.conn.criabd();
 	}
 	
 	// Método para criar um exame em um BD.
@@ -29,10 +30,11 @@ public class ExameDAO implements IEntityDAO<Exame>{
 	
 		try {
 			PreparedStatement pstm = conn.getConnection()
-				.prepareStatement("INSERT INTO EXAMES (ID, DESCRICAO, DATA) VALUES(?, ?, ?);");
-			pstm.setLong(1, t.getId());
-			pstm.setString(2, t.getDescricao());
-			pstm.setObject(3, t.getData());
+				.prepareStatement("INSERT INTO EXAMES ( DESCRICAO, DATA_EXAME,PACIENTE_ID) VALUES(?,?, ?);");
+			pstm.setString(1, t.getDescricao());
+			pstm.setObject(2, t.getData());
+			pstm.setLong(3, (long) t.getPaciente_id());
+			
 			pstm.execute();
 			pstm.close();
 		} catch (SQLException e) {
@@ -56,7 +58,8 @@ public class ExameDAO implements IEntityDAO<Exame>{
 				e = new Exame();
 				e.setId(rs.getLong("id"));
 				e.setDescricao(rs.getString("descricao"));
-				e.setData(rs.getObject("data", LocalDateTime.class));
+				e.setData(rs.getObject("data_exame", LocalDateTime.class));
+				e.setPaciente_id(rs.getLong("paciente_id"));
 			}
 			pstm.close();
 		} catch (SQLException exception) {
@@ -83,51 +86,54 @@ public class ExameDAO implements IEntityDAO<Exame>{
 	}
 
 	// Realiza a listagem dos exames
-	@Override
 	public List<Exame> findAll() {
-		// TODO Auto-generated method stub
-		List<Exame> exames = new ArrayList<>();
-		
-		try {
-			PreparedStatement pstm = conn.getConnection()
-				.prepareStatement("SELECT * FROM EXAMES;");
-			
-			ResultSet rs = pstm.executeQuery();
-			
-			while (rs.next()) {
-				Exame e = new Exame();
-				e.setId(rs.getLong("id"));
-				e.setDescricao(rs.getString("descricao"));
-				e.setData(rs.getObject("data", LocalDateTime.class));
-			}
-			pstm.close();
-		} catch (SQLException exception) {
-			// TODO: handle exception
-			exception.printStackTrace();
-		}
-		return null;
+	    List<Exame> exames = new ArrayList<>();
+
+	    try {
+	        PreparedStatement pstm = conn.getConnection()
+	            .prepareStatement("SELECT * FROM EXAMES;");
+	        
+	        ResultSet rs = pstm.executeQuery();
+	        
+	        while (rs.next()) {
+	            Exame e = new Exame();
+	            e.setId(rs.getLong("id"));
+	            e.setDescricao(rs.getString("descricao"));
+	            e.setData(rs.getObject("data_exame", LocalDateTime.class));
+	            exames.add(e); // <-- Adiciona o exame na lista
+	        }
+	        
+	        pstm.close();
+	    } catch (SQLException exception) {
+	        exception.printStackTrace();
+	    }
+
+	    return exames; // <-- Retorna a lista preenchida
 	}
+
 
 	// Atualização dos exames
 	@Override
 	public void update(Exame t) {
-		// TODO Auto-generated method stub
-		if (t.getDescricao() == null || t.getData() == null) {
-			throw new IllegalArgumentException("\n Os campos descrição e data são obrigatórios");
-		}
-		
-		try {
-			PreparedStatement pstm = conn.getConnection()
-				.prepareStatement("UPDATE EXAMES SET descricao = ?, data = ? WHERE id = ?;");
-			pstm.setLong(1, t.getId());
-			pstm.setString(2, t.getDescricao());
-			pstm.setObject(3, t.getData());
-			pstm.execute();
-			pstm.close();
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+	    if (t.getDescricao() == null || t.getData() == null) {
+	        throw new IllegalArgumentException("\n Os campos descrição e data são obrigatórios");
+	    }
+
+	    try {
+	        PreparedStatement pstm = conn.getConnection()
+	            .prepareStatement("UPDATE EXAMES SET descricao = ?, data_exame = ?, paciente_id = ? WHERE id = ?;");
+	        
+	        pstm.setString(1, t.getDescricao());
+	        pstm.setObject(2, t.getData());
+	        pstm.setLong(3, (long) t.getPaciente_id());
+	        pstm.setLong(4, t.getId());
+
+	        pstm.execute();
+	        pstm.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 }

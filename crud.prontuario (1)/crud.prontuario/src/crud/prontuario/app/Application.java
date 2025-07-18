@@ -176,7 +176,7 @@ public class Application {
     private static void listarExames() {
         List<Exame> exames = exameDAO.findAll();
         System.out.println("\n=== Lista de Exames ===");
-        if (exames.isEmpty()) {
+        if (exames == null || exames.isEmpty()) {
             System.out.println("Nenhum exame cadastrado.");
         } else {
             for (Exame e : exames) {

@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
-
 import crud.prontuario.database.IConnection;
 import crud.prontuario.model.Paciente;
 
@@ -17,36 +15,25 @@ public class PacienteDAO implements IEntityDAO<Paciente>{
 	
 	public PacienteDAO(IConnection connection) {
 		this.conn = connection;
+		this.conn.criabd();
 	}
 	
-	@Override
+
 	public void create(Paciente t) {
-		// TODO Auto-generated method stub
-		
-		// A condição valida os dados obrigatórios(nome e cpf).
-		if (t.getCpf() == null || t.getNome() == null) {
-			throw new IllegalArgumentException("Não");
-		}
-		
-		try {
-			/**
-			 * A classe PreperadedStatement é uma interface
-			 * da Java DataBase Connectivity, representando um
-			 * comando SQL pré-compilada.
-			 * Protege de ataque SQL.
-			 */
-			PreparedStatement pstm = conn.getConnection()
-				.prepareStatement("INSERT INTO PACIENTES (ID, NOME, CPF) VALUES (?, ?, ?);");
-			pstm.setLong(1, t.getId());
-			pstm.setString(2, t.getNome());
-			pstm.setString(3, t.getCpf());
-			pstm.execute();
-			pstm.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    try {
+	  
+
+	        PreparedStatement pstm = conn.getConnection()
+	            .prepareStatement("INSERT INTO PACIENTES (NOME, CPF) VALUES ( ?, ?);");
+	        pstm.setString(1, t.getNome());
+	        pstm.setString(2, t.getCpf());
+	        pstm.execute();
+	        pstm.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
 	}
+
 
 	/**
 	 * O método retorna null se não encontrar o paciente e
